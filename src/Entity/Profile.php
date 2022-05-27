@@ -6,6 +6,7 @@ use App\Repository\ProfileRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
+use App\Entity\User;
 
 /**
  * @ORM\Entity(repositoryClass=ProfileRepository::class)
@@ -47,6 +48,7 @@ class Profile
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="profile", cascade={"persist", "remove"})
+     * @var User|null
      */
     private $user;
 
@@ -113,12 +115,14 @@ class Profile
     public function setUser(?User $user): self
     {
         // unset the owning side of the relation if necessary
-        if ($user === null && $this->user !== null) {
+        if ($user === null && $this->user !== null)
+        {
             $this->user->setProfile(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($user !== null && $user->getProfile() !== $this) {
+        if ($user !== null && $user->getProfile() !== $this)
+        {
             $user->setProfile($this);
         }
 
