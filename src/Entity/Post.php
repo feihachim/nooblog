@@ -31,7 +31,15 @@ class Post
     /**
      * @ORM\Column(type="string", length=255)
      * @var string
-     * @Assert\NotBlank
+     * @Assert\NotBlank(
+     * message="Le titre de l'article ne doit pas être vide"
+     * )
+     * @Assert\Length(
+     * min=2,
+     * max=255,
+     * minMessage="Le titre doit avoir au minimum {{limit}} lettres",
+     * maxMessage="Le titre ne peut avoir au maximum que {{limit}} lettres"
+     * )
      */
     private $title;
 

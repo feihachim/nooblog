@@ -21,3 +21,7 @@ intégrer cdn pour bootstrap 5 et fontawesome
 -phase one:
 
 créer entités user,profil,post,category,comment et like et les relations entre les entités
+
+-phase two:
+
+formulaires inscription,connexion et articles
