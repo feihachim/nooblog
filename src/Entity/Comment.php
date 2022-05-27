@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Profile;
+use App\Entity\Post;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
@@ -35,6 +37,20 @@ class Comment
      * @var \Datetime|null
      */
     private $updatedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Profile::class, inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     * @var Profile
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     * @var Post
+     */
+    private $post;
 
     public function getId(): ?int
     {
@@ -73,6 +89,30 @@ class Comment
     public function setUpdatedAt(?\DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?Profile
+    {
+        return $this->user;
+    }
+
+    public function setUser(Profile $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPost(): ?Post
+    {
+        return $this->post;
+    }
+
+    public function setPost(Post $post): self
+    {
+        $this->post = $post;
 
         return $this;
     }
