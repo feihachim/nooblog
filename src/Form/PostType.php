@@ -15,12 +15,8 @@ class PostType extends AbstractType
             ->add('title')
             ->add('content')
             ->add('imageName')
-            ->add('createdAt')
-            ->add('updatedAt')
             ->add('isVisible')
-            ->add('category')
-            ->add('profile')
-        ;
+            ->add('category');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

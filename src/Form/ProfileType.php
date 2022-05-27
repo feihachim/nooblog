@@ -13,10 +13,7 @@ class ProfileType extends AbstractType
     {
         $builder
             ->add('pseudo')
-            ->add('imageName')
-            ->add('updatedAt')
-            ->add('user')
-        ;
+            ->add('imageName');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
