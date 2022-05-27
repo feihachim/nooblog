@@ -17,3 +17,7 @@ installer php-cs-fixer pour une meilleure indentaion du code
 installer phpstan et extensions pour phpunit,symfony et doctrine pour analyse statique du code php
 
 intégrer cdn pour bootstrap 5 et fontawesome
+
+-phase one:
+
+créer entités user,profil,post,category,comment et like et les relations entre les entités

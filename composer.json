@@ -91,7 +91,7 @@
             "@auto-scripts"
         ],
         "cs-fixer":"tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src --rules=@Symfony",
-        "phpstan":"vendor/bin/phpstan analyse -l 5 src tests"
+        "phpstan":"vendor/bin/phpstan analyse"
     },
     "conflict": {
         "symfony/symfony": "*"
