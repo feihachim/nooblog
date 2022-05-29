@@ -20,8 +20,16 @@
 
 		{% endblock %}
 	</head>
-	<body>
-    {% include 'partials/_navbar.html.twig' %}
-		{% block body %}{% endblock %}
+	<body class="d-flex flex-column min-vh-100">
+	<header>
+	{% include 'partials/_navbar.html.twig' %}
+	</header>    
+	<main class="container">
+	{% block body %}{% endblock %}
+	</main>		
+		<footer class="mt-auto bg-dark text-white">
+		<p>Copyright</p>
+		Image par <a href="https://pixabay.com/fr/users/geralt-9301/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2923048">Gerd Altmann</a> de <a href="https://pixabay.com/fr/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2923048">Pixabay</a>
+		</footer>
 	</body>
 </html>
