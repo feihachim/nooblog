@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Profile;
-use App\Entity\Post;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
@@ -16,24 +14,28 @@ class Comment
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
      * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
+     *
      * @var string
      */
     private $content;
 
     /**
      * @ORM\Column(type="datetime")
+     *
      * @var \Datetime
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     *
      * @var \Datetime|null
      */
     private $updatedAt;
@@ -41,6 +43,7 @@ class Comment
     /**
      * @ORM\ManyToOne(targetEntity=Profile::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
+     *
      * @var Profile
      */
     private $user;
@@ -48,6 +51,7 @@ class Comment
     /**
      * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
+     *
      * @var Post
      */
     private $post;

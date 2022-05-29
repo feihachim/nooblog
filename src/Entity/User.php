@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use App\Entity\Profile;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -19,18 +18,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
      * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     *
      * @var string
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     *
      * @var string[]
      */
     private $roles = [];
@@ -38,12 +40,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * 
      */
     private $password;
 
     /**
      * @ORM\OneToOne(targetEntity=Profile::class, inversedBy="user", cascade={"persist", "remove"})
+     *
      * @var Profile|null
      */
     private $profile;
@@ -96,10 +98,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @param string[] $roles
-     * @return self
      */
     public function setRoles(array $roles): self
     {

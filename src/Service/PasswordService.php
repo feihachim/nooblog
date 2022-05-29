@@ -7,9 +7,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class PasswordService
 {
-
     /**
-     * Undocumented variable
+     * Undocumented variable.
      *
      * @var UserPasswordHasherInterface
      */

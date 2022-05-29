@@ -8,11 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use App\Entity\Category;
-use App\Entity\Profile;
-use App\Entity\Comment;
-use App\Entity\Like;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PostRepository::class)
@@ -24,24 +19,28 @@ class Post
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
      * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @var string
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     *
      * @var string
      */
     private $content;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     *
      * @var string|null
      */
     private $imageName;
@@ -55,24 +54,28 @@ class Post
 
     /**
      * @ORM\Column(type="datetime")
+     *
      * @var \Datetime
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     *
      * @var \Datetime|null
      */
     private $updatedAt;
 
     /**
      * @ORM\Column(type="boolean")
+     *
      * @var bool
      */
     private $isVisible;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="posts")
+     *
      * @var Category|null
      */
     private $category;
@@ -80,18 +83,21 @@ class Post
     /**
      * @ORM\ManyToOne(targetEntity=Profile::class, inversedBy="posts")
      * @ORM\JoinColumn(nullable=false)
+     *
      * @var Profile
      */
     private $profile;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post", orphanRemoval=true)
+     *
      * @var Collection<int, Comment>
      */
     private $comments;
 
     /**
      * @ORM\OneToMany(targetEntity=Like::class, mappedBy="post", orphanRemoval=true)
+     *
      * @var Collection<int, Like>
      */
     private $likes;
@@ -153,8 +159,7 @@ class Post
     public function setImageFile(File $imageFile = null): void
     {
         $this->imageFile = $imageFile;
-        if (null !== $imageFile)
-        {
+        if (null !== $imageFile) {
             $this->updatedAt = new \DateTime('now');
         }
     }
@@ -229,8 +234,7 @@ class Post
 
     public function addComment(Comment $comment): self
     {
-        if (!$this->comments->contains($comment))
-        {
+        if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
             $comment->setPost($this);
         }
@@ -240,8 +244,7 @@ class Post
 
     public function removeComment(Comment $comment): self
     {
-        if ($this->comments->removeElement($comment))
-        {
+        if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
             /*if ($comment->getPost() === $this)
             {
@@ -262,8 +265,7 @@ class Post
 
     public function addLike(Like $like): self
     {
-        if (!$this->likes->contains($like))
-        {
+        if (!$this->likes->contains($like)) {
             $this->likes[] = $like;
             $like->setPost($this);
         }
@@ -273,8 +275,7 @@ class Post
 
     public function removeLike(Like $like): self
     {
-        if ($this->likes->removeElement($like))
-        {
+        if ($this->likes->removeElement($like)) {
             // set the owning side to null (unless already changed)
             /*if ($like->getPost() === $this)
             {

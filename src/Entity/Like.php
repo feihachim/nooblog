@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use App\Repository\LikeRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Profile;
-use App\Entity\Post;
 
 /**
  * @ORM\Entity(repositoryClass=LikeRepository::class)
@@ -17,6 +15,7 @@ class Like
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
      * @var int
      */
     private $id;
@@ -24,6 +23,7 @@ class Like
     /**
      * @ORM\ManyToOne(targetEntity=Profile::class, inversedBy="likes")
      * @ORM\JoinColumn(nullable=false)
+     *
      * @var Profile
      */
     private $profile;
@@ -31,6 +31,7 @@ class Like
     /**
      * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="likes")
      * @ORM\JoinColumn(nullable=false)
+     *
      * @var Post
      */
     private $post;

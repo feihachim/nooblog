@@ -4,4 +4,8 @@
 
 {% block body %}
 <h1>Liste des articles</h1>
+{% for post in posts %}
+<h2>{{post.title}}</h2>
+<p>{{post.profile.pseudo}}</p>
+{% endfor %}
 {% endblock %}
