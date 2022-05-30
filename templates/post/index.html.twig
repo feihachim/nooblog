@@ -1,11 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PostController!{% endblock %}
+{% block title %}Hello PostController!
+{% endblock %}
 
 {% block body %}
-<h1>Liste des articles</h1>
-{% for post in posts %}
-<h2>{{post.title}}</h2>
-<p>{{post.profile.pseudo}}</p>
-{% endfor %}
+	<h1>Liste des articles</h1>
+	<section class="d-flex flex-wrap mb-3" style="column-gap:20px;row-gap:20px">
+		{% for post in posts %}
+			<div class="card" style="width:18rem">
+				{% if post.imageName is defined %}
+					<img src="{{vich_uploader_asset(post)}}" class="card-img-top" alt="">
+				{% endif %}
+				<div class="card-body">
+					<h5 class="card-title">{{post.title}}</h5>
+					<p class="card-text">
+						{{post.content|u.truncate(100,'...')}}
+					</p>
+					<p>Ecrit par
+						{% if post.profile.pseudo is defined %}
+							<a href="{{path('app_profile_show',{id:post.profile.id})}}" class="card-link">
+								{{post.profile.pseudo}}
+							</a>
+						{% else %}
+							Anonyme
+						{% endif %}
+
+					</p>
+					<p>
+						<span>
+							{% if app.user and post.isLikedByUser(app.user.profile) %}
+								&#128420
+							{% else %}
+								&#9825
+							{% endif %}
+							{{post.likes|length}}
+						</span>
+						<span>
+							{% if app.user and post.isCommentedByUser(app.user.profile) %}
+								&#128489
+							{% else %}
+								&#128172
+							{% endif %}
+							{{post.comments|length}}
+						</span>
+					</p>
+					<a href="{{ path('app_post_show',{id:post.id}) }}" class="card-link">Voir +</a>
+				</div>
+			</div>
+
+		{% endfor %}
+	</section>
+	<div class="d-flex justify-content-center mt-6 pagination">
+		{{knp_pagination_render(posts)}}
+	</div>
+
 {% endblock %}

@@ -159,7 +159,8 @@ class Post
     public function setImageFile(File $imageFile = null): void
     {
         $this->imageFile = $imageFile;
-        if (null !== $imageFile) {
+        if (null !== $imageFile)
+        {
             $this->updatedAt = new \DateTime('now');
         }
     }
@@ -234,7 +235,8 @@ class Post
 
     public function addComment(Comment $comment): self
     {
-        if (!$this->comments->contains($comment)) {
+        if (!$this->comments->contains($comment))
+        {
             $this->comments[] = $comment;
             $comment->setPost($this);
         }
@@ -244,7 +246,8 @@ class Post
 
     public function removeComment(Comment $comment): self
     {
-        if ($this->comments->removeElement($comment)) {
+        if ($this->comments->removeElement($comment))
+        {
             // set the owning side to null (unless already changed)
             /*if ($comment->getPost() === $this)
             {
@@ -265,7 +268,8 @@ class Post
 
     public function addLike(Like $like): self
     {
-        if (!$this->likes->contains($like)) {
+        if (!$this->likes->contains($like))
+        {
             $this->likes[] = $like;
             $like->setPost($this);
         }
@@ -275,7 +279,8 @@ class Post
 
     public function removeLike(Like $like): self
     {
-        if ($this->likes->removeElement($like)) {
+        if ($this->likes->removeElement($like))
+        {
             // set the owning side to null (unless already changed)
             /*if ($like->getPost() === $this)
             {
@@ -284,5 +289,41 @@ class Post
         }
 
         return $this;
+    }
+
+    /**
+     * Vérifie si l'utilisateur a liké cet article
+     *
+     * @param Profile $profile
+     * @return boolean
+     */
+    public function isLikedByUser($profile): bool
+    {
+        foreach ($this->likes as $likes)
+        {
+            if ($likes->getProfile() == $profile)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Vérifie si l'utilisateur a commenté cet article
+     *
+     * @param Profile $profile
+     * @return boolean
+     */
+    public function isCommentedByUser($profile): bool
+    {
+        foreach ($this->comments as $comments)
+        {
+            if ($comments->getUser() == $profile)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

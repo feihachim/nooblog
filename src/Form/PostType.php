@@ -34,7 +34,7 @@ class PostType extends AbstractType
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
-                'choice-label' => 'name',
+                'choice_label' => 'name',
                 'label' => 'Catégorie de l\'article',
                 'required' => false,
             ])

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nooblog|Détail du profil
+{% endblock %}
+
+{% block body %}
+	<h1>Détail profil</h1>
+	<div class="card mb-3" style="max-width: 720px;">
+		<div class="row g-0">
+			<div class="col-md-4">
+				{% if profile.imageName != '' %}
+					<img src="{{ vich_uploader_asset(profile) }}" class="img-fluid rounded-start" alt="...">
+				{% else %}
+					<img src="{{ 'images/profiles/avatar.png' }}" class="img-fluid rounded-start" alt="avatar anonyme">
+				{% endif %}
+			</div>
+			<div class="col-md-8">
+				<div class="card-body">
+					<h5 class="card-title">{{profile.pseudo}}</h5>
+					<p class="card-text">A publié
+						{{profile.posts|length}}
+						articles</p>
+					<p class="card-text">
+						{% if profile.posts|length >0 %}
+
+							{% for post in profile.posts %}
+								<ul class="list-group list-group-horizontal">
+									<li class="list-group-item">
+										<a href="{{path('app_post_show',{id:post.id})}}">{{post.title}}</a>
+									</li>
+									{% if app.user and post.profile == app.user.profile %}
+										<li class="list-group-item">
+											<a href="{{path('app_post_edit',{id:post.id})}}">Modifier</a>
+										</li>
+										<li class="list-group-item">
+											<a href="{{path('app_post_delete',{id:post.id})}}">Supprimer</a>
+										</li>
+									{% endif %}
+								</ul>
+							{% endfor %}
+						{% endif %}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

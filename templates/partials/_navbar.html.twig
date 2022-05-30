@@ -13,7 +13,7 @@
 					<a class="nav-link" href="{{path('app_post')}}">Article</a>
 				</li>
 				<li class="nav-item">
-				<a href="#" class="nav-link">Catégories</a>
+					<a href="{{path('app_category')}}" class="nav-link">Catégories</a>
 				</li>
 				<li class="nav-item">
 					<a href="#" class="nav-link">A Propos</a>
@@ -31,15 +31,25 @@
 				{% if app.user %}
 					<li class="nav-item dropdown">
 						<a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
-						{% if app.user.profile.pseudo is defined %}
-						{{ app.user.profile.pseudo|title  }}
-						{% else %}
-						Anonyme
-						{% endif %}
+							{% if app.user.profile.pseudo is defined %}
+								{{ app.user.profile.pseudo|title  }}
+							{% else %}
+								Anonyme
+							{% endif %}
 						</a>
 						<ul class="dropdown-menu">
-						<li><a href="#" class="dropdown-item">Mon profil</a></li>
-						<li><a href="#" class="dropdown-item">Editer mon profil</a></li>
+							{% if app.user.profile is defined %}
+								<li>
+									<a href="{{path('app_profile_show',{id:app.user.profile.id})}}" class="dropdown-item">Mon profil</a>
+								</li>
+								<li>
+									<a href="{{path('app_profile_edit',{id:app.user.profile.id})}}" class="dropdown-item">Editer mon profil</a>
+								</li>
+							{% else %}
+								<li>
+									<a href="{{path('app_profile_new')}}" class="dropdown-item">Créer mon profil</a>
+								</li>
+							{% endif %}
 						</ul>
 					</li>
 					<li class="nav-item">

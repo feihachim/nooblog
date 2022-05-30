@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Nooblog|Détail de l'article
+{% endblock %}
+
+{% block body %}
+	<h1>Détail de l'article</h1>
+	<article>
+		<h2>{{post.title}}</h2>
+		{% if post.imageName!='' %}
+			<img src="{{vich_uploader_asset(post)}}" alt="">
+		{% endif %}
+		<p>{{post.content}}</p>
+		<i>Ecrit par
+			{% if post.profile is defined %}
+				<a href="{{path('app_profile_show',{id:post.profile.id})}}">{{post.profile.pseudo}}</a>
+			{% else %}
+				Anonyme
+			{% endif %}
+			le
+			{{post.createdAt|date}}</i>
+		<p>
+			Catégorie:
+
+			{% if post.category.id is defined %}
+				<a href="{{path('app_category_show',{id:post.category.id})}}">
+					{{post.category}}
+				{% else %}
+					<a href="{{path('app_category_show',{id:0})}}">
+						Non classé
+					{% endif %}
+				</a>
+			</p>
+		</p>
+	</article>
+
+	{% if app.user %}
+		<div>
+			{{form(commentForm)}}
+			</div>
+		{% endif %}
+		<ul>
+			{% if comments is defined %}
+				{% for comment in comments %}
+					<li>
+						Ecrit par
+						<a href="{{path('app_profile_show',{id:comment.user.id})}}">{{comment.user.pseudo}}</a>
+						le
+						{{comment.createdAt|date}}:<br>
+						{{comment.content}}
+					</li>
+				{% endfor %}
+			{% else %}
+				<li>Aucun commentaire</li>
+			{% endif %}
+		</ul>
+
+	{% endblock %}
