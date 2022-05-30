@@ -66,7 +66,7 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/post/{id}",name="app_post_show",requirements={"id"=>"\d+"})
+     * @Route("/post/{id}",name="app_post_show",requirements={"id"="\d+"})
      */
     public function show(int $id, Request $request): Response
     {

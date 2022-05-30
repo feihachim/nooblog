@@ -29,7 +29,7 @@ class Profile
      * @ORM\Column(type="string", length=255)
      *
      * @var string
-     * @Assert\Unique
+     * 
      */
     private $pseudo;
 
@@ -126,7 +126,8 @@ class Profile
     public function setImageFile(File $imageFile = null): void
     {
         $this->imageFile = $imageFile;
-        if (null !== $imageFile) {
+        if (null !== $imageFile)
+        {
             $this->updatedAt = new \DateTime('now');
         }
     }
@@ -151,12 +152,14 @@ class Profile
     public function setUser(?User $user): self
     {
         // unset the owning side of the relation if necessary
-        if (null === $user && null !== $this->user) {
+        if (null === $user && null !== $this->user)
+        {
             $this->user->setProfile(null);
         }
 
         // set the owning side of the relation if necessary
-        if (null !== $user && $user->getProfile() !== $this) {
+        if (null !== $user && $user->getProfile() !== $this)
+        {
             $user->setProfile($this);
         }
 
@@ -175,7 +178,8 @@ class Profile
 
     public function addPost(Post $post): self
     {
-        if (!$this->posts->contains($post)) {
+        if (!$this->posts->contains($post))
+        {
             $this->posts[] = $post;
             $post->setProfile($this);
         }
@@ -185,7 +189,8 @@ class Profile
 
     public function removePost(Post $post): self
     {
-        if ($this->posts->removeElement($post)) {
+        if ($this->posts->removeElement($post))
+        {
             // set the owning side to null (unless already changed)
             /*if ($post->getProfile() === $this)
             {
@@ -206,7 +211,8 @@ class Profile
 
     public function addComment(Comment $comment): self
     {
-        if (!$this->comments->contains($comment)) {
+        if (!$this->comments->contains($comment))
+        {
             $this->comments[] = $comment;
             $comment->setUser($this);
         }
@@ -216,7 +222,8 @@ class Profile
 
     public function removeComment(Comment $comment): self
     {
-        if ($this->comments->removeElement($comment)) {
+        if ($this->comments->removeElement($comment))
+        {
             // set the owning side to null (unless already changed)
             /*if ($comment->getUser() === $this)
             {
@@ -237,7 +244,8 @@ class Profile
 
     public function addLike(Like $like): self
     {
-        if (!$this->likes->contains($like)) {
+        if (!$this->likes->contains($like))
+        {
             $this->likes[] = $like;
             $like->setProfile($this);
         }
@@ -247,7 +255,8 @@ class Profile
 
     public function removeLike(Like $like): self
     {
-        if ($this->likes->removeElement($like)) {
+        if ($this->likes->removeElement($like))
+        {
             // set the owning side to null (unless already changed)
             /*if ($like->getProfile() === $this)
             {
@@ -256,5 +265,30 @@ class Profile
         }
 
         return $this;
+    }
+
+    /**
+     * Return only the security relevant data
+     *
+     * @return array{'id':int,'pseudo':string}
+     */
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'pseudo' => $this->pseudo,
+
+        ];
+    }
+
+    /**
+     * Restore security relevant data
+     *
+     * @param array{'id':int,'pseudo':string} $data
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->id = $data['id'];
+        $this->pseudo = $data['pseudo'];
     }
 }

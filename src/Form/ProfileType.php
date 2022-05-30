@@ -27,38 +27,6 @@ class ProfileType extends AbstractType
                 'required' => false,
                 'label' => 'Photo du profil',
             ])
-            ->add('oldPassword', PasswordType::class, [
-                'label' => 'Mot de passe actuel',
-                'mapped' => false,
-                'required' => false,
-                'constraints' => [
-                    new UserPassword([
-                        'message' => 'Le mot de passe actuel est incorrect',
-                    ]),
-                ],
-            ])
-            ->add('newPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'mapped' => false,
-                'required' => false,
-                'invalid_message' => 'Les mots de passe doivent être identiques',
-                'first_options' => [
-                    'label' => 'Nouveau mot de passe',
-                ],
-                'second_options' => [
-                    'label' => 'Confirmation du nouveaumot de passe',
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez entrer un mot de passe',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Votre mot de passe doit avoir au minimum {{limit}} caractères',
-                        'max' => 4096,
-                    ]),
-                ],
-            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Editer',
             ]);

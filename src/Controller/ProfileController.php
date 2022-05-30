@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\ProfileType;
 use App\Repository\ProfileRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -68,8 +71,32 @@ class ProfileController extends AbstractController
     /**
      * @Route("/profile/edit/{id}",name="app_profile_edit")
      */
-    public function edit(): Response
+    public function edit(int $id, Request $request): Response
     {
-        return $this->render('profile/edit.html.twig');
+        $profile = $this->profileRepo->findOneBy(['id' => $id]);
+        if ($profile != null && $this->getUser())
+        {
+            /**
+             * @var User
+             */
+            $user = $this->getUser();
+            if ($profile == $user->getProfile())
+            {
+                $form = $this->createForm(ProfileType::class, $profile);
+                $form->handleRequest($request);
+
+                if ($form->isSubmitted() && $form->isValid())
+                {
+                    $this->entityManager->persist($profile);
+                    $this->entityManager->flush();
+
+                    return $this->redirectToRoute('app_profile_show', ['id' => $profile->getId()]);
+                }
+                return $this->renderForm('profile/edit.html.twig', [
+                    'form' => $form
+                ]);
+            }
+        }
+        return $this->redirectToRoute('app_home');
     }
 }
