@@ -4,6 +4,11 @@
 	Nooblog|Détail de l'article
 {% endblock %}
 
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('like') }}
+{% endblock %}
+
 {% block body %}
 	<h1>Détail de l'article</h1>
 	<article>

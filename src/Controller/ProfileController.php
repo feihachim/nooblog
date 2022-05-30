@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Profile;
 use App\Entity\User;
 use App\Form\ProfileType;
 use App\Repository\ProfileRepository;
@@ -44,7 +45,39 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/profile/{id}",name="app_profile_show")
+     * Undocumented function
+     *
+     * @Route("/profile/new",name="app_profile_new")
+     */
+    public function new(Request $request): Response
+    {
+        if ($this->getUser())
+        {
+            /**
+             * @var User
+             */
+            $user = $this->getUser();
+            $profile = new Profile();
+            $profile->setUser($user);
+            $form = $this->createForm(ProfileType::class, $profile);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid())
+            {
+                $this->entityManager->persist($profile);
+                $this->entityManager->flush();
+
+                return $this->redirectToRoute('app_profile_show', ['id' => $profile->getId()]);
+            }
+            return $this->renderForm('profile/edit.html.twig', [
+                'form' => $form
+            ]);
+        }
+        return $this->redirectToRoute('app_home');
+    }
+
+    /**
+     * @Route("/profile/{id}",name="app_profile_show",requirements={"id"="\d+"})
      */
     public function show(int $id): Response
     {
@@ -58,18 +91,10 @@ class ProfileController extends AbstractController
         return $this->redirectToRoute('app_home');
     }
 
-    /**
-     * Undocumented function
-     *
-     * @Route("/profile/new",name="app_profile_new")
-     */
-    public function new(): Response
-    {
-        return $this->render('profile/edit.html.twig');
-    }
+
 
     /**
-     * @Route("/profile/edit/{id}",name="app_profile_edit")
+     * @Route("/profile/edit/{id}",name="app_profile_edit",requirements={"id"="\d+"})
      */
     public function edit(int $id, Request $request): Response
     {
