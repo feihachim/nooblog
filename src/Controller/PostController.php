@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Like;
 use App\Entity\Post;
 use App\Entity\Profile;
 use App\Entity\User;
 use App\Form\CommentType;
 use App\Form\PostType;
 use App\Repository\CommentRepository;
+use App\Repository\LikeRepository;
 use App\Repository\PostRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
@@ -31,6 +33,11 @@ class PostController extends AbstractController
     private $commentRepo;
 
     /**
+     * @var LikeRepository
+     */
+    private $likeRepo;
+
+    /**
      * @var ObjectManager
      */
     private $entityManager;
@@ -39,6 +46,7 @@ class PostController extends AbstractController
     {
         $this->postRepo = new PostRepository($doctrine);
         $this->commentRepo = new CommentRepository($doctrine);
+        $this->likeRepo = new LikeRepository($doctrine);
         $this->entityManager = $doctrine->getManager();
     }
 
@@ -216,5 +224,66 @@ class PostController extends AbstractController
             }
         }
         return $this->redirectToRoute('app_home');
+    }
+
+    /**
+     * Liker un article
+     *
+     * @param integer $id
+     * @Route("/post/like/{id}",name="post_like",requirements={"id"="\d+"},methods={"GET"})
+     */
+    public function like(int $id): Response
+    {
+        $post = $this->postRepo->findOneBy(['id' => $id]);
+        if ($post != null)
+        {
+            if ($this->getUser())
+            {
+                /**
+                 * @var User
+                 */
+                $user = $this->getUser();
+                $profile = $user->getProfile();
+                if ($profile != null)
+                {
+                    if ($post->isLikedByUser($profile))
+                    {
+                        /**
+                         * @var Like
+                         */
+                        $like = $this->likeRepo->findOneBy(['post' => $post, 'profile' => $profile]);
+                        $this->entityManager->remove($like);
+                        $this->entityManager->flush();
+                        return $this->json([
+                            'code' => 200,
+                            'message' => 'Like supprimé',
+                            'likes' => $this->likeRepo->count(['post' => $post])
+                        ], 200);
+                    }
+                    $like = new Like();
+                    $like->setPost($post);
+                    $like->setProfile($profile);
+                    $this->entityManager->persist($like);
+                    $this->entityManager->flush();
+                    return $this->json([
+                        'code' => 200,
+                        'message' => 'Like ajouté',
+                        'likes' => $this->likeRepo->count(['post' => $post])
+                    ], 200);
+                }
+                else
+                {
+                    return $this->json(['code' => 404, 'messagge' => 'Profile not found'], 404);
+                }
+            }
+            else
+            {
+                return $this->json(['code' => 403, 'message' => 'Unauthorized'], 403);
+            }
+        }
+        else
+        {
+            return $this->json(['code' => 404, 'message' => 'Post not found'], 404);
+        }
     }
 }

@@ -6,6 +6,7 @@
 
 {% block javascripts %}
 	{{ parent() }}
+
 	{{ encore_entry_script_tags('like') }}
 {% endblock %}
 
@@ -17,6 +18,18 @@
 			<img src="{{vich_uploader_asset(post)}}" alt="">
 		{% endif %}
 		<p>{{post.content}}</p>
+		<p class="like-infos">
+			<a href="{{path('post_like',{id:post.id})}}" class="js-like">
+				<span class="post-like-count">{{ post.likes|length }}</span>
+				{% if app.user and post.isLikedByUser(app.user) %}
+					<i class="heart-symbol">&#128420</i>
+					<span class="like-label">Je n'aime plus</span>
+				{% else %}
+					<i class="heart-symbol">&#9825</i>
+					<span class="like-label">J'aime</span>
+				{% endif %}
+			</a>
+		</p>
 		<i>Ecrit par
 			{% if post.profile is defined %}
 				<a href="{{path('app_profile_show',{id:post.profile.id})}}">{{post.profile.pseudo}}</a>
