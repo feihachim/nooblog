@@ -21,22 +21,16 @@ use Doctrine\Persistence\ObjectManager;
 class PostController extends AbstractController
 {
     /**
-     * Undocumented variable
-     *
      * @var PostRepository
      */
     private $postRepo;
 
     /**
-     * Undocumented variable
-     *
      * @var CommentRepository
      */
     private $commentRepo;
 
     /**
-     * Undocumented variable
-     *
      * @var ObjectManager
      */
     private $entityManager;
@@ -49,6 +43,8 @@ class PostController extends AbstractController
     }
 
     /**
+     * Afficher la liste des derniers articles
+     * 
      * @Route("/post", name="app_post")
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
@@ -66,6 +62,45 @@ class PostController extends AbstractController
     }
 
     /**
+     * Créer un nouvel article
+     *
+     * @param Request $request
+     * @Route("/post/new",name="app_post_new")
+     */
+    public function new(Request $request): Response
+    {
+        $post = new Post();
+        if ($this->getUser())
+        {
+            /**
+             * @var User
+             */
+            $user = $this->getUser();
+            $profile = $user->getProfile();
+            if ($profile != null)
+            {
+                $post->setProfile($profile);
+                $form = $this->createForm(PostType::class, $post);
+                $form->handleRequest($request);
+
+                if ($form->isSubmitted() && $form->isValid())
+                {
+                    $this->entityManager->persist($post);
+                    $this->entityManager->flush();
+
+                    return $this->redirectToRoute('app_post_show', ['id' => $post->getId()]);
+                }
+                return $this->renderForm('post/edit.html.twig', [
+                    'form' => $form
+                ]);
+            }
+        }
+        return $this->redirectToRoute('app_home');
+    }
+
+    /**
+     * Afficher un article en détail et les commentaires
+     * 
      * @Route("/post/{id}",name="app_post_show",requirements={"id"="\d+"})
      */
     public function show(int $id, Request $request): Response
@@ -118,7 +153,7 @@ class PostController extends AbstractController
     }
 
     /**
-     * Undocumented function
+     * Modifie un article
      *
      * @param integer $id
      * @param Request $request
@@ -152,23 +187,34 @@ class PostController extends AbstractController
                         'form' => $form
                     ]);
                 }
-                else
-                {
-                    $this->redirectToRoute('app_home');
-                }
             }
         }
         return $this->redirectToRoute('app_home');
     }
 
     /**
-     * Undocumented function
+     * Supprime in article
      *
      * @param integer $id
      * @Route("/post/delete/{id}",name="app_post_delete",requirements={"id"="\d+"})
      */
     public function delete(int $id): Response
     {
+        $post = $this->postRepo->findOneBy(['id' => $id]);
+        if ($post != null && $this->getUser())
+        {
+            /**
+             * @var User
+             */
+            $user = $this->getUser();
+            $profile = $user->getProfile();
+            if ($profile != null && $post->getProfile() == $profile)
+            {
+                $this->entityManager->remove($post);
+                $this->entityManager->flush();
+                return $this->redirectToRoute('app_profile_show', ['id' => $profile->getId()]);
+            }
+        }
         return $this->redirectToRoute('app_home');
     }
 }

@@ -21,8 +21,10 @@
 						{{profile.posts|length}}
 						articles</p>
 					<p class="card-text">
+						{% if app.user and profile == app.user.profile %}
+							<a href="{{path('app_post_new')}}">Publier un nouvel article</a>
+						{% endif %}
 						{% if profile.posts|length >0 %}
-
 							{% for post in profile.posts %}
 								<ul class="list-group list-group-horizontal">
 									<li class="list-group-item">
