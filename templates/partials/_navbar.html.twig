@@ -10,7 +10,7 @@
 					<a class="nav-link active" aria-current="page" href="{{path('app_home')}}">Accueil</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="{{path('app_post')}}">Article</a>
+					<a class="nav-link" href="{{path('app_post')}}">Articles</a>
 				</li>
 				<li class="nav-item">
 					<a href="{{path('app_category')}}" class="nav-link">Catégories</a>
@@ -25,7 +25,7 @@
 			<ul class="navbar-nav">
 				{% if is_granted('ROLE_ADMIN') %}
 					<li class="nav-item bg-danger">
-						<a href="{{path('admin')}}" class="nav-link">Admin</a>
+						<a href="#" class="nav-link">Admin</a>
 					</li>
 				{% endif %}
 				{% if app.user %}

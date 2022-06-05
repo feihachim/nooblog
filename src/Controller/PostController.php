@@ -51,13 +51,24 @@ class PostController extends AbstractController
     }
 
     /**
+     * Affiche la liste des articles en dump style
+     *
+     * @Route("/doomp",name="doomp")
+     */
+    public function doomp(): Response
+    {
+        $posts = $this->postRepo->findAll();
+        dd($posts);
+    }
+
+    /**
      * Afficher la liste des derniers articles
      * 
      * @Route("/post", name="app_post")
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        //$query = $this->postRepo->createQueryBuilder('p')->where(['p.isVisible' => true])->orderBy(['p.createdAt' => 'DESC'])->getQuery();
+
         $lastPosts = $this->postRepo->findBy(['isVisible' => true], ['createdAt' => 'DESC']);
         $lastPosts = $paginator->paginate(
             $lastPosts,

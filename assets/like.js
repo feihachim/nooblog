@@ -1,4 +1,4 @@
-console.log('Je suis like');
+console.log('Je suis like pas du tout');
 
 function onClickBtnLike(event) {
     event.preventDefault();
@@ -15,10 +15,10 @@ function onClickBtnLike(event) {
     xhr.send();
 
     xhr.onload = function () {
-        if (xhr.status == 403) {
+        if (xhr.status === 403) {
             window.alert("Vous n'êtes pas autorisé à liker car vous n'êtes pas connecté!");
         }
-        else if (xhr.status != 200) {
+        else if (xhr.status !== 200) {
             window.alert("Une erreur s'est produite,réessayez plus tard!");
         }
         else {
@@ -36,6 +36,4 @@ function onClickBtnLike(event) {
     }
 }
 
-document.querySelectorAll('a.js-like').forEach(function (link) {
-    link.addEventListener(onClickBtnLike);
-});
+document.querySelector('a.js-like').addEventListener('click', onClickBtnLike);
