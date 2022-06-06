@@ -11,10 +11,12 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+use function PHPUnit\Framework\isNull;
+
 /**
  * @ORM\Entity(repositoryClass=ProfileRepository::class)
  * @Vich\Uploadable
- * @UniqueEntity(fields={"pseudo"},message="Il y a déjà un pseudo avec ce profil")
+ * 
  */
 class Profile
 {
@@ -28,7 +30,7 @@ class Profile
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255)
      *
      * @var string
      * 
@@ -292,5 +294,14 @@ class Profile
     {
         $this->id = $data['id'];
         $this->pseudo = $data['pseudo'];
+    }
+
+    public function __toString(): string
+    {
+        if (isNull($this->pseudo))
+        {
+            return 'NULL';
+        }
+        return $this->pseudo;
     }
 }
