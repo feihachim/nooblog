@@ -1,5 +1,47 @@
 easy_admin:
+  site_name: 'Nooblog Inc.'
   entities:
-    # List the entity class name you want to manage
-    - App\Entity\Post
-    - App\Entity\Category
+    Articles:
+      class: App\Entity\Post
+      list:
+        fields:
+          - id
+          - title
+          - { property: 'imageName', template: 'vich_uploader_image.html.twig' }
+          - profile.pseudo
+      show:
+        fields:
+          - id
+          - title
+          - {property: 'imageName',type: 'image',base_path: '/images/posts/'}
+          - content
+          - createdAt
+          - category.name
+          - profile.pseudo
+      form:
+        fields:
+          - title
+          - {property: 'imageFile',type: 'vich_image'}
+          - content
+    Catégories:
+      class: App\Entity\Category
+    Profils:
+      class: App\Entity\Profile
+      list:
+        fields:
+          - id
+          - pseudo
+          - { property: 'imageName', template: 'vich_uploader_image.html.twig' }
+          - user.email
+      form:
+        fields:
+          - pseudo
+          - {property: 'imageFile',type: 'vich_image'}
+  design:
+    menu:
+      - {label: 'Site ', route: 'app_home'}
+      - Articles
+      - Catégories
+      - Profils
+      - {label: 'Déconnexion', route: 'app_logout'}
+

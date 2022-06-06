@@ -298,10 +298,6 @@ class Profile
 
     public function __toString(): string
     {
-        if (isNull($this->pseudo))
-        {
-            return 'NULL';
-        }
         return $this->pseudo;
     }
 }

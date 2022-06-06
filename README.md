@@ -25,3 +25,5 @@ créer entités user,profil,post,category,comment et like et les relations entre
 -phase two:
 
 formulaires inscription,connexion et articles
+
+webpack encore bootstrap sass-loader
